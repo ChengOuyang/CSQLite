@@ -98,12 +98,13 @@ extension CSQLite3PerformanceProtocol {
         let numOfRows = row / concurrentCount
         var cost = Double(0)
         let group = DispatchGroup()
-        for (_, sqlite) in sqlites.enumerated() {
+        for (index, sqlite) in sqlites.enumerated() {
+            print("并行查寻", index)
             group.enter()
             DispatchQueue.global().async {
                 let duration = calculatCostTime {
                     self.sqlOperation(sqlite: sqlite, operation: {
-                        if !sqlite.query(limit: numOfRows, offset: 0) {
+                        if !sqlite.query(limit: numOfRows, offset: numOfRows * index) {
                             objc_sync_enter(cost)
                             cost = -1
                             objc_sync_exit(cost)

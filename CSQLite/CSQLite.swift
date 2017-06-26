@@ -34,6 +34,7 @@ public class CSQLite {
     }
     
     fileprivate let SQLITE_STATIC = unsafeBitCast(0, to: sqlite3_destructor_type.self)
+    fileprivate let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
     
     public init() {
         setup()
@@ -147,7 +148,7 @@ public class CSQLite {
     
     @discardableResult public func query(limit: Int, offset: Int) ->Bool {
         
-        let sql = NSString(string: "select * from \(tableName) limit \(limit) offset \(offset)")
+        let sql = NSString(string: "select * from \(tableName) order by _rowid_ limit \(limit) offset \(offset)")
         
         var pStmt: OpaquePointer? = nil
         

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C9306DF1F0101E00035525A /* CMulLinkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9306DE1F0101E00035525A /* CMulLinkViewModel.swift */; };
 		4CB76A161EFC9EF900CE8467 /* CSingleDbViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76A151EFC9EF900CE8467 /* CSingleDbViewModel.swift */; };
 		4CB76A181EFCA57200CE8467 /* CMulTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76A171EFCA57200CE8467 /* CMulTableViewModel.swift */; };
 		4CB76A1A1EFCAFF800CE8467 /* CMulDbViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76A191EFCAFF800CE8467 /* CMulDbViewModel.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4C9306DE1F0101E00035525A /* CMulLinkViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CMulLinkViewModel.swift; sourceTree = "<group>"; };
 		4CB76A151EFC9EF900CE8467 /* CSingleDbViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CSingleDbViewModel.swift; sourceTree = "<group>"; };
 		4CB76A171EFCA57200CE8467 /* CMulTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CMulTableViewModel.swift; sourceTree = "<group>"; };
 		4CB76A191EFCAFF800CE8467 /* CMulDbViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CMulDbViewModel.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				4CB76A151EFC9EF900CE8467 /* CSingleDbViewModel.swift */,
 				4CB76A191EFCAFF800CE8467 /* CMulDbViewModel.swift */,
 				4CB76A171EFCA57200CE8467 /* CMulTableViewModel.swift */,
+				4C9306DE1F0101E00035525A /* CMulLinkViewModel.swift */,
 				4CB76A1B1EFCB87600CE8467 /* CPerformanceProtocol.swift */,
 				4CB76A1D1EFCE84C00CE8467 /* CRunResult.swift */,
 				4CF5E0511EFBB58E00754B6B /* CSQLite.swift */,
@@ -305,6 +308,7 @@
 				4CB76A181EFCA57200CE8467 /* CMulTableViewModel.swift in Sources */,
 				4CB76A1C1EFCB87600CE8467 /* CPerformanceProtocol.swift in Sources */,
 				4CE3B75A1EFBB3B00069E9AE /* ViewController.swift in Sources */,
+				4C9306DF1F0101E00035525A /* CMulLinkViewModel.swift in Sources */,
 				4CB76A1A1EFCAFF800CE8467 /* CMulDbViewModel.swift in Sources */,
 				4CF5E0521EFBB58E00754B6B /* CSQLite.swift in Sources */,
 				4CF5E0541EFBBDB200754B6B /* CViewController.swift in Sources */,

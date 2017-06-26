@@ -45,34 +45,25 @@ public class CSingleDbViewModel: NSObject, CSQLite3PerformanceProtocol {
     }
     
     public func concurrentInsert() -> Double {
-        print("无法对同一个表进行并行插入.")
+        print("无法对同一个数据库连接进行多线程操作.")
         return -1
     }
     
-    public func concurrentQuery() -> Double {
+    public func serialQuery() -> Double {
         guard sqlites.count == 1 else { return -1 }
-        print("开始并行查寻数据.")
+        print("开始串行查寻数据.")
         let sqlite = sqlites[0]
-        var cost = Double(0)
-        let numOfRow = row / concurrentCount
-        let group = DispatchGroup()
-        for index in 0..<concurrentCount {
-            group.enter()
-            DispatchQueue.global().async {
-                let duration = calculatCostTime {
-                    self.sqlOperation(sqlite: sqlite, operation: {
-                        sqlite.query(limit: numOfRow, offset: numOfRow * index)
-                    })
-                }
-                // 对 cost 进行操作加锁
-                objc_sync_enter(cost)
-                cost = (cost > duration) ? cost : duration
-                objc_sync_exit(cost)
-                group.leave()
-            }
+        let cost = calculatCostTime {
+            self.sqlOperation(sqlite: sqlite, operation: {
+                sqlite.query(limit: row, offset: 0)
+            })
         }
-        group.wait()
-        print("完成并行插入数据.")
+        print("完成串行查寻数据.")
         return cost
+    }
+    
+    public func concurrentQuery() -> Double {
+        print("无法对同一个数据库连接进行多线程操作.")
+        return -1
     }
 }

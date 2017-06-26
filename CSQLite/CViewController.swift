@@ -68,6 +68,7 @@ extension CViewController {
     
     /// 比较插入在是否开启事务下的性能
     public func insertCompare() {
+        
         // 初始化
         singleViewModel.setup()
         // 设置行数为5000
@@ -100,17 +101,17 @@ extension CViewController {
     public func reuseCompare() {
         // 初始化
         singleViewModel.setup()
-        // 设置行数为 500000
-        singleViewModel.row = 500000
+        // 设置行数为 50000
+        singleViewModel.row = 50000
         // 开启事务
         singleViewModel.isTransaction = true
         
         print("row = ", singleViewModel.rowsOfTable())
         
         // 设置不重用 VDEB 语句
-        singleViewModel.reuse = true
+        singleViewModel.reuse = false
         
-        // 重复 5 次获取在不重用 VDEB 语句情况下写入 5000 条数据平均时间
+        // 重复 5 次获取在不重用 VDEB 语句情况下写入 50000 条数据平均时间
         var noReuseCost = Double(0)
         for _ in 0..<5 {
             noReuseCost += singleViewModel.serialInsert()
@@ -127,8 +128,39 @@ extension CViewController {
         }
         reuseCost = reuseCost / 5
         
-        print("transactionCost = ", reuseCost)
-        print("noTransactionCost = ", noReuseCost)
+        print("row = ", singleViewModel.rowsOfTable())
+        
+        print("reuseCost = ", reuseCost)
+        print("noReuseCost = ", noReuseCost)
+    }
+    
+    public func concurrentQueryInTable() {
+        // 初始化
+        // 设置并发数量为 2
+        mulLinkViewModel.concurrentCount = 8
+        mulLinkViewModel.setup()
+        // 设置行数为 50000
+        mulLinkViewModel.row = 500000
+        
+        // 开启显式事务，提高写入速度
+//        mulLinkViewModel.isTransaction = true
+//        // 插入 500000 数据
+//        print("concurrent insert ", mulLinkViewModel.serialInsert())
+        
+        // 关闭显式事务
+        mulLinkViewModel.isTransaction = false
+        
+        // 串行查寻
+        print("serial = ", mulLinkViewModel.serialQuery())
+        
+        // 重复 5 次获取在并发数为2的情况下查寻 500000 条数据的平均时间
+        var cost = Double(0)
+        for _ in 0..<5 {
+            cost += mulLinkViewModel.concurrentQuery()
+        }
+        cost = cost / 5
+        
+        print("concurrent = ", cost)
     }
     
     public func initDatabase() {
@@ -239,6 +271,8 @@ public class CViewController: UIViewController {
     
     fileprivate var singleViewModel = CSingleDbViewModel()
     
+    fileprivate var mulLinkViewModel = CMulLinkViewModel()
+    
     fileprivate var mulTableViewModel = CMulTableViewModel()
     
     fileprivate var mulDbViewModel = CMulDbViewModel()
@@ -284,12 +318,12 @@ public class CViewController: UIViewController {
     /// 查寻按钮
     fileprivate lazy var queryButton: UIButton = {
         let button = UIButton()
-        button.setTitle("多库单表", for: .normal)
+        button.setTitle("串并行查寻", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = button.titleLabel?.font.withSize(12)
         button.backgroundColor = UIColor(red:0.01, green:0.66, blue:0.95, alpha:1.00)
         button.layer.cornerRadius = 30
-        button.addTarget(self, action: #selector(self.queryData), for: .touchUpInside)
+        button.addTarget(self, action: #selector(self.concurrentQueryInTable), for: .touchUpInside)
         return button
     }()
     
