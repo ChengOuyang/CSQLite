@@ -28,6 +28,9 @@ public class CSQLite {
     /// 数据库连接
     public var db: OpaquePointer? = nil
     
+    /// 数据库配置
+    public var config = CSQLiteConfig()
+    
     /// 数据库文件路径
     fileprivate var dbPath: UnsafePointer<Int8> {
         return NSString(string: path + "/" + fileName).fileSystemRepresentation
@@ -40,16 +43,18 @@ public class CSQLite {
         setup()
     }
     
-    public init(fileName: String, tableName: String) {
+    public init(fileName: String, tableName: String, config: CSQLiteConfig) {
         self.fileName = fileName
         self.tableName = tableName
+        self.config = config
         setup()
     }
     
-    public init(path: String, fileName: String, tableName: String) {
+    public init(path: String, fileName: String, tableName: String, config: CSQLiteConfig) {
         self.path = path
         self.fileName = fileName
         self.tableName = tableName
+        self.config = config
         setup()
     }
     
@@ -62,11 +67,17 @@ public class CSQLite {
 
         print("path = ", path)
         
-        if sqlite3_open_v2(dbPath, &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil) == SQLITE_OK {
+        if sqlite3_open_v2(dbPath, &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_PRIVATECACHE, nil) == SQLITE_OK {
             print("打开数据库 \(fileName) 成功.")
         } else {
             print("打开数据库失败：", lastErrorMessage())
         }
+        
+        // 配置数据库
+        sqlite3_exec(db, "PRAGMA synchronous = \(config.synchronousMode.description)", nil, nil, nil)
+        sqlite3_exec(db, "PRAGMA journal_mode = \(config.journalMode.description)", nil, nil, nil)
+        sqlite3_exec(db, "PRAGMA page_size = \(config.pageSize)", nil, nil, nil)
+        sqlite3_exec(db, "PRAGMA cache_size = \(config.cacheSize)", nil, nil, nil)
         
         if !tableExist() {
             print("数据表 \(tableName) 不存在." )
@@ -114,8 +125,10 @@ public class CSQLite {
         
         for index in 0..<row {
 //            print("row = ", index)
-            sqlite3_bind_text(pStmt, 1, NSString(string: "abc\(index)").utf8String, -1, SQLITE_STATIC)
-            sqlite3_bind_text(pStmt, 2, NSString(string: "dde\(index)").utf8String, -1, SQLITE_STATIC)
+            autoreleasepool {
+                sqlite3_bind_text(pStmt, 1, NSString(string: "abc\(index)").utf8String, -1, SQLITE_STATIC)
+                sqlite3_bind_text(pStmt, 2, NSString(string: "dde\(index)").utf8String, -1, SQLITE_STATIC)
+            }
             sqlite3_bind_int64(pStmt, 3, 30)
             sqlite3_bind_double(pStmt, 4, 40.0)
             sqlite3_bind_double(pStmt, 5, 50.0)

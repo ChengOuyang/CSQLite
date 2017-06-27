@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4C9306DF1F0101E00035525A /* CMulLinkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9306DE1F0101E00035525A /* CMulLinkViewModel.swift */; };
+		4C9306E11F011B990035525A /* CSQLiteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9306E01F011B990035525A /* CSQLiteConfig.swift */; };
 		4CB76A161EFC9EF900CE8467 /* CSingleDbViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76A151EFC9EF900CE8467 /* CSingleDbViewModel.swift */; };
 		4CB76A181EFCA57200CE8467 /* CMulTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76A171EFCA57200CE8467 /* CMulTableViewModel.swift */; };
 		4CB76A1A1EFCAFF800CE8467 /* CMulDbViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB76A191EFCAFF800CE8467 /* CMulDbViewModel.swift */; };
@@ -45,6 +46,7 @@
 
 /* Begin PBXFileReference section */
 		4C9306DE1F0101E00035525A /* CMulLinkViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CMulLinkViewModel.swift; sourceTree = "<group>"; };
+		4C9306E01F011B990035525A /* CSQLiteConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CSQLiteConfig.swift; sourceTree = "<group>"; };
 		4CB76A151EFC9EF900CE8467 /* CSingleDbViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CSingleDbViewModel.swift; sourceTree = "<group>"; };
 		4CB76A171EFCA57200CE8467 /* CMulTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CMulTableViewModel.swift; sourceTree = "<group>"; };
 		4CB76A191EFCAFF800CE8467 /* CMulDbViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CMulDbViewModel.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				4CF5E0531EFBBDB200754B6B /* CViewController.swift */,
 				4CB76A151EFC9EF900CE8467 /* CSingleDbViewModel.swift */,
 				4CB76A191EFCAFF800CE8467 /* CMulDbViewModel.swift */,
+				4C9306E01F011B990035525A /* CSQLiteConfig.swift */,
 				4CB76A171EFCA57200CE8467 /* CMulTableViewModel.swift */,
 				4C9306DE1F0101E00035525A /* CMulLinkViewModel.swift */,
 				4CB76A1B1EFCB87600CE8467 /* CPerformanceProtocol.swift */,
@@ -308,6 +311,7 @@
 				4CB76A181EFCA57200CE8467 /* CMulTableViewModel.swift in Sources */,
 				4CB76A1C1EFCB87600CE8467 /* CPerformanceProtocol.swift in Sources */,
 				4CE3B75A1EFBB3B00069E9AE /* ViewController.swift in Sources */,
+				4C9306E11F011B990035525A /* CSQLiteConfig.swift in Sources */,
 				4C9306DF1F0101E00035525A /* CMulLinkViewModel.swift in Sources */,
 				4CB76A1A1EFCAFF800CE8467 /* CMulDbViewModel.swift in Sources */,
 				4CF5E0521EFBB58E00754B6B /* CSQLite.swift in Sources */,

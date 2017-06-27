@@ -134,19 +134,20 @@ extension CViewController {
         print("noReuseCost = ", noReuseCost)
     }
     
+    /// 比较同一个表串行、并行查寻性能
     public func concurrentQueryInTable() {
         // 初始化
         // 设置并发数量为 2
-        mulLinkViewModel.concurrentCount = 8
+        mulLinkViewModel.concurrentCount = 2
         mulLinkViewModel.setup()
         // 设置行数为 50000
         mulLinkViewModel.row = 500000
         
         // 开启显式事务，提高写入速度
-//        mulLinkViewModel.isTransaction = true
-//        // 插入 500000 数据
-//        print("concurrent insert ", mulLinkViewModel.serialInsert())
-        
+        mulLinkViewModel.isTransaction = true
+        // 插入 500000 数据
+        print("serial insert ", mulLinkViewModel.serialInsert())
+
         // 关闭显式事务
         mulLinkViewModel.isTransaction = false
         
@@ -161,6 +162,85 @@ extension CViewController {
         cost = cost / 5
         
         print("concurrent = ", cost)
+    }
+    
+    public func synchronousMode() {
+        // 初始化
+        singleViewModel.config.synchronousMode = .normal
+        singleViewModel.setup()
+        // 设置行数为 500000
+        singleViewModel.row = 500000
+        // 开启事务
+        singleViewModel.isTransaction = true
+        
+        print("row = ", singleViewModel.rowsOfTable())
+        
+        // 重复 5 次获取在文件同步正常模式下串行写入数据的平均时间
+        var normalCost = Double(0)
+        for _ in 0..<5 {
+            normalCost += singleViewModel.serialInsert()
+        }
+        normalCost = normalCost / 5
+        
+        singleViewModel.config.synchronousMode = .off
+        singleViewModel.setup()
+        
+        // 重复 5 次获取在文件同步关闭模式下串行写入数据的平均时间
+        var offCost = Double(0)
+        for _ in 0..<5 {
+            offCost += singleViewModel.serialInsert()
+        }
+        offCost = offCost / 5
+        
+        print("row = ", singleViewModel.rowsOfTable())
+        
+        print("normalCost = ", normalCost)
+        print("offCost = ", offCost)
+    }
+    
+    public func journalMode() {
+        // 初始化
+        singleViewModel.config.journalMode = .normal
+        singleViewModel.setup()
+        // 设置行数为 500000
+        singleViewModel.row = 500000
+        // 开启事务
+        singleViewModel.isTransaction = true
+        
+        print("row = ", singleViewModel.rowsOfTable())
+        
+        // 重复 5 次获取在日志文件处于正常模式下串行写入数据的平均时间
+        var normalCost = Double(0)
+        for _ in 0..<5 {
+            normalCost += singleViewModel.serialInsert()
+        }
+        normalCost = normalCost / 5
+        
+        singleViewModel.config.journalMode = .off
+        singleViewModel.setup()
+        
+        // 重复 5 次获取在日志文件处于关闭模式下串行写入数据的平均时间
+        var offCost = Double(0)
+        for _ in 0..<5 {
+            offCost += singleViewModel.serialInsert()
+        }
+        offCost = offCost / 5
+        
+        singleViewModel.config.journalMode = .memory
+        singleViewModel.setup()
+        
+        // 重复 5 次获取在日志文件处于内存模式下串行写入数据的平均时间
+        var memoryCost = Double(0)
+        for _ in 0..<5 {
+            memoryCost += singleViewModel.serialInsert()
+        }
+        memoryCost = memoryCost / 5
+        
+        print("row = ", singleViewModel.rowsOfTable())
+        
+        print("normalCost = ", normalCost)
+        print("offCost = ", offCost)
+        print("memoryCost = ", memoryCost)
     }
     
     public func initDatabase() {
@@ -196,14 +276,6 @@ extension CViewController {
 // MARK: - 事件响应(UI相关)
 extension CViewController {
     
-    public func reuseOperation() {
-        if singleViewModel.reuse {
-            reuseButton.setTitle("开启复用", for: .normal)
-        } else {
-            reuseButton.setTitle("关闭复用", for: .normal)
-        }
-        singleViewModel.reuse = !singleViewModel.reuse
-    }
 }
 
 public class CViewController: UIViewController {
@@ -307,7 +379,7 @@ public class CViewController: UIViewController {
     /// 复用按钮
     fileprivate lazy var reuseButton: UIButton = {
         let button = UIButton()
-        button.setTitle("重用语句", for: .normal)
+        button.setTitle("重用语句比较", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = button.titleLabel?.font.withSize(12)
         button.backgroundColor = UIColor(red:0.01, green:0.66, blue:0.95, alpha:1.00)
@@ -330,12 +402,12 @@ public class CViewController: UIViewController {
     /// 多次插入按钮
     fileprivate lazy var mulInsertButton: UIButton = {
         let button = UIButton()
-        button.setTitle("", for: .normal)
+        button.setTitle("日志模式测试", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = button.titleLabel?.font.withSize(12)
         button.backgroundColor = UIColor(red:0.01, green:0.66, blue:0.95, alpha:1.00)
         button.layer.cornerRadius = 30
-        button.addTarget(self, action: #selector(self.mulDbQueryData), for: .touchUpInside)
+        button.addTarget(self, action: #selector(self.journalMode), for: .touchUpInside)
         return button
     }()
 }

@@ -23,6 +23,8 @@ public class CMulDbViewModel: NSObject, CSQLite3PerformanceProtocol {
     
     public var sqlites = [CSQLite]()
     
+    public var config = CSQLiteConfig()
+    
     public var reuse: Bool = true
     
     public var row: Int = 1000 {
@@ -46,7 +48,7 @@ public class CMulDbViewModel: NSObject, CSQLite3PerformanceProtocol {
     public func setup() {
         sqlites.removeAll()
         for index in 0..<concurrentCount {
-            let sqlite = CSQLite(fileName: "mulTable\(index).db", tableName: "test")
+            let sqlite = CSQLite(fileName: "mulTable\(index).db", tableName: "test", config: config)
             sqlites.append(sqlite)
         }
     }

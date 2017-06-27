@@ -17,6 +17,8 @@ public class CSingleDbViewModel: NSObject, CSQLite3PerformanceProtocol {
     
     public var sqlites = [CSQLite]()
     
+    public var config = CSQLiteConfig()
+    
     public var reuse: Bool = true
     
     public var row: Int = 1000 {
@@ -40,7 +42,7 @@ public class CSingleDbViewModel: NSObject, CSQLite3PerformanceProtocol {
     public func setup() {
         sqlites.removeAll()
         concurrentCount = 1
-        let sqlite = CSQLite(fileName: "single.db", tableName: "csqlite")
+        let sqlite = CSQLite(fileName: "single.db", tableName: "csqlite", config: config)
         sqlites.append(sqlite)
     }
     

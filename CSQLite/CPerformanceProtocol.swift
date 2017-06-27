@@ -13,6 +13,9 @@ public protocol CSQLite3PerformanceProtocol: CPerformanceProtocol {
     /// 数据库连接对象
     var sqlites: [CSQLite] { get set }
     
+    /// 数据库配置
+    var config: CSQLiteConfig { get set }
+    
     /// SQL VDBE 语句复用
     var reuse: Bool { get set }
 }
